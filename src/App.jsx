@@ -1,22 +1,22 @@
-// App.js
-
 import { useState, useEffect } from 'react';
 import './index.css';
-
+// Oyunun başlangıç durumunu temsil edir
 const initialBoard = Array(9).fill(null);
 
 const App = () => {
   const [board, setBoard] = useState(initialBoard);
   const [isXNext, setIsXNext] = useState(true);
   const [winner, setWinner] = useState(null);
-
+  // useEffect, her renderden sonra oyun durumunu kontrol edir
   useEffect(() => {
+          // winner i kontrol et
     if (!winner) {
       const winnerCheck = calculateWinner(board);
       if (winnerCheck) {
         setWinner(winnerCheck);
+        // Qazanan yok berabere
       } else if (!board.includes(null)) {
-        // If no winner and the board is filled, it's a draw
+        //Qazanan yoxdursa it's a draw
         setWinner('Draw');
       } else if (!isXNext) {
         // If it's computer's turn
@@ -25,10 +25,10 @@ const App = () => {
       }
     }
   }, [board, isXNext, winner]);
-
+  // Oyuncunun tıkladığı 
   const handleSquareClick = (index) => {
     if (board[index] || winner) {
-      // If the square is already filled or there's a winner, do nothing
+      // Eger doludusa ve ya qazanan varsa hecne etme
       return;
     }
 
@@ -75,7 +75,6 @@ const App = () => {
   );
 };
 
-// Function to calculate the winner of the game
 const calculateWinner = (squares) => {
   const lines = [
     [0, 1, 2],
@@ -99,8 +98,12 @@ const calculateWinner = (squares) => {
 };
 
 // Function to calculate the computer's move (random move for simplicity)
+
+
 const calculateComputerMove = (squares) => {
+    // Boş karelerin indekslerini tutacak olan dizi
   const emptySquares = squares.reduce((acc, value, index) => {
+    //bosdursa index i arraya artirir
     if (!value) {
       acc.push(index);
     }
@@ -108,6 +111,8 @@ const calculateComputerMove = (squares) => {
   }, []);
 
   const randomIndex = Math.floor(Math.random() * emptySquares.length);
+
+    // Bilgisayarın seçtiği rastgele boş karenin indeksini döndür
   return emptySquares[randomIndex];
 };
 
